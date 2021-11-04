@@ -1,5 +1,5 @@
 from typing import List
-from exceptions import ValidatedError, HasOwnerError
+from game.exceptions import ValidatedError, HasOwnerError
 
 class TicTacGame:
     def __init__(self) -> None:
