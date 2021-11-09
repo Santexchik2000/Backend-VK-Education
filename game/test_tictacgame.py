@@ -186,6 +186,26 @@ class TestTicTacGame(unittest.TestCase):
         self.game.board[8] = "O"
         self.assertTrue(self.game.check_win(self.game.board))
     
-    #def test_check_draw_first(self):
+    def test_check_draw_first(self):
+        self.game.board[0] = "X"
+        self.game.board[1] = "O"
+        self.game.board[2] = "X"
+        self.game.board[3] = "X"
+        self.game.board[4] = "X"
+        self.game.board[5] = "O"
+        self.game.board[6] = "O"
+        self.game.board[7] = "X"
+        self.game.board[8] = "O"
+        self.assertFalse(self.game.check_win(self.game.board))#возвращает False
 
-    #def test_check_draw_second(self):
+    def test_check_draw_second(self):
+        self.game.board[0] = "O"
+        self.game.board[1] = "X"
+        self.game.board[2] = "X"
+        self.game.board[3] = "X"
+        self.game.board[4] = "X"
+        self.game.board[5] = "O"
+        self.game.board[6] = "O"
+        self.game.board[7] = "O"
+        self.game.board[8] = "X"
+        self.assertFalse(self.game.check_win(self.game.board))#возвращает False

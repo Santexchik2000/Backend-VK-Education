@@ -33,7 +33,7 @@ class TicTacGame:
             raise HasOwnerError("Данная клетка уже занята")
         return True
 
-    def setTheValue(self, player_name: str):
+    def set_the_value(self, player_name: str):
         """Метод игры реализующий запоминание ходов игроков"""
         while True:
             try:
@@ -64,9 +64,9 @@ class TicTacGame:
         while True:
             self.draw_board()
             if counter % 2 == 0:
-                self.setTheValue('X')
+                self.set_the_value('X')
             else:
-                self.setTheValue('O')
+                self.set_the_value('O')
             if counter > 3:
                 winner = self.check_win(self.board)
                 if winner:
