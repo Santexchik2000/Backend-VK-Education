@@ -1,9 +1,10 @@
 from typing import List
-from game.exceptions import ValidatedError, HasOwnerError
+from exceptions import ValidatedError, HasOwnerError
+
 
 class TicTacGame:
     def __init__(self) -> None:
-        self.board = list(map(str, range(1, 10))) 
+        self.board = list(map(str, range(1, 10)))
         self.wins_coord = [(1, 2, 3), (4, 5, 6), (7, 8, 9),
                            (1, 5, 9), (3, 5, 7), (1, 4, 7), (2, 5, 8), (3, 6, 9)]
 
@@ -17,27 +18,30 @@ class TicTacGame:
 
     def validation(self, value: str) -> bool:
         """Метод для валидации ввода пользователя"""
+        if len(value) > 1:
+            raise ValidatedError(
+                "Введено неправильное значение, повторите ввод")
         if not (value in "123456789"):
             raise ValidatedError("Введено неправильное значение, повторите")
         if value == '':
             raise ValidatedError("Введено пустое значение, повторите")
         return True
 
-    def has_owner(self, value: int) -> bool:
+    def hasnot_owner(self, value: int) -> bool:
         """Метод для проверки занятости той или иной клетки"""
         if str(self.board[value - 1]) in 'XO':
             raise HasOwnerError("Данная клетка уже занята")
         return True
 
-    def take_input(self, player_name: str):
-        """Основной метод игры реализующий запоминание ходов игроков"""
+    def setTheValue(self, player_name: str):
+        """Метод игры реализующий запоминание ходов игроков"""
         while True:
             try:
                 value = input("Ходит игрок" + " " +
                               player_name + ". Назовите ячейку; ")
                 self.validation(value)
                 value = int(value)
-                self.has_owner(value)
+                self.hasnot_owner(value)
                 self.board[value-1] = player_name
                 break
             except ValidatedError as e:
@@ -60,9 +64,9 @@ class TicTacGame:
         while True:
             self.draw_board()
             if counter % 2 == 0:
-                self.take_input('X')
+                self.setTheValue('X')
             else:
-                self.take_input('O')
+                self.setTheValue('O')
             if counter > 3:
                 winner = self.check_win(self.board)
                 if winner:

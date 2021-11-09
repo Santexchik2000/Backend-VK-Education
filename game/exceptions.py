@@ -6,4 +6,3 @@ class ValidatedError(Exception):
 class HasOwnerError(Exception):
     """Класс ошибки присвоения, в уже занятую ячейку"""
     pass
-

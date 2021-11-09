@@ -1,4 +1,4 @@
-from game.game import TicTacGame
+from game import TicTacGame
 
 if __name__ == "__main__":
     t = TicTacGame()
