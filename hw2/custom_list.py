@@ -50,3 +50,4 @@ class CustomList(list):
     def __rsub__(self, compared_list) -> list:
         """метод для вычитания списков в случае если первый список не является CustomList"""
         return self.__sub__(compared_list)
+
