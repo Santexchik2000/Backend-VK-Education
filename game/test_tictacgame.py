@@ -6,7 +6,7 @@ from exceptions import ValidatedError, HasOwnerError
 class TestTicTacGame(unittest.TestCase):
     """Класс для написания тестов для класса TicTacGame"""
 
-    def setUp(self) -> None:
+    def setUp(self):
         self.game = TicTacGame()
 
     def test_validation_positive(self):
