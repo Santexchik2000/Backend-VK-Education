@@ -21,7 +21,7 @@ class CustomMeta(type):
         a = super().__call__(*args, **kwargs)
         new_attrs = {}
         for attr, val in a.__dict__.items():
-            if not attr.startswith("__"):
+            if not (attr.startswith("__") and attr.endswith("__")):
                 new_attrs[f"custom_{attr}"] = val
             else:
                 new_attrs[attr] = val
