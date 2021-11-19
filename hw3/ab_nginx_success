@@ -1,0 +1,43 @@
+$ ab -n 1000 -c 959 http://localhost/ > ab_nginx_success 
+This is ApacheBench, Version 2.3 <$Revision: 1879490 $>
+Copyright 1996 Adam Twiss, Zeus Technology Ltd, http://www.zeustech.net/
+Licensed to The Apache Software Foundation, http://www.apache.org/
+
+Benchmarking localhost (be patient)
+
+
+Server Software:        nginx/1.20.1
+Server Hostname:        localhost
+Server Port:            80
+
+Document Path:          /
+Document Length:        282 bytes
+
+Concurrency Level:      959
+Time taken for tests:   0.082 seconds
+Complete requests:      1000
+Failed requests:        0
+Total transferred:      515000 bytes
+HTML transferred:       282000 bytes
+Requests per second:    12269.04 [#/sec] (mean)
+Time per request:       78.164 [ms] (mean)
+Time per request:       0.082 [ms] (mean, across all concurrent requests)
+Transfer rate:          6170.46 [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+Connect:        0   19   4.6     18      27
+Processing:    10   28   8.4     31      39
+Waiting:        0   28   8.8     31      39
+Total:         28   47   6.0     50      53
+
+Percentage of the requests served within a certain time (ms)
+  50%     50
+  66%     52
+  75%     52
+  80%     53
+  90%     53
+  95%     53
+  98%     53
+  99%     53
+ 100%     53 (longest request)
