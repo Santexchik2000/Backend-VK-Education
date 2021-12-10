@@ -36,7 +36,7 @@ class Manager(CommonInfo):
 
 
 class Driver(CommonInfo):
-    car_number = models.CharField('Номер машины', max_length=12)
+    pass
 
 
 class Loader(CommonInfo):
