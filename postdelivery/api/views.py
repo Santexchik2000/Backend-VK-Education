@@ -29,3 +29,5 @@ def get_info_contract(request, id):
         return JsonResponse({"message_status":f"Информация о заказе {id}"})
     else:
         return HttpResponseNotAllowed(['GET'])
+    
+###
