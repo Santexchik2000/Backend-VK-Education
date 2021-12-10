@@ -49,19 +49,27 @@ class Recipient(models.Model):
     telefon = models.CharField('Телефон получателя', max_length=12)
 
 
-class Adress(models.Model):
+class AdressSender(models.Model):
     city = models.CharField('Город', max_length=64)
     street = models.CharField('Улица', max_length=64)
     house = models.CharField('Дом', max_length=25)
     flat = models.CharField('Квартира', max_length=4)
-    adress_sender = models.BooleanField(default=True)
+    
 
 
+class AdressRecipient(models.Model):
+    city = models.CharField('Город', max_length=64)
+    street = models.CharField('Улица', max_length=64)
+    house = models.CharField('Дом', max_length=25)
+    flat = models.CharField('Квартира', max_length=4)
+    
+
+  
 class Route(models.Model):
     adress_Sender = models.ForeignKey(
-        'Adress', verbose_name='Адрес отправителя', on_delete=models.RESTRICT, related_name='routes_sender')
+        'AdressSender', verbose_name='Адрес отправителя', on_delete=models.RESTRICT, related_name='routes_sender')
     adress_Recipient = models.ForeignKey(
-        'Adress', verbose_name='Адрес получателя', on_delete=models.RESTRICT, related_name='routes_recipient')
+        'AdressRecipient', verbose_name='Адрес получателя', on_delete=models.RESTRICT, related_name='routes_recipient')
 
 
 class LoadersList(models.Model):
