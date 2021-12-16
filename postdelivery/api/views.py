@@ -9,42 +9,14 @@ from api.decorators import require_body
 from db.models import Client
 
 @csrf_exempt
-# @require_POST  # делаем views доступным только от этого метода
-def create_contract(request):
-    if request.method == "POST":
-        name = request.POST["name"]
-        if len(name) >= 1:
-            return JsonResponse({"message_status": f"Заказ {name} создан"})
-        else:
-            return JsonResponse({"message_status": "Введите имя заказа"},status=400)
-    else: 
-        return HttpResponseNotAllowed(['POST'])
-
-# @require_GET  # делаем views доступным только от этого метода
-def get_list_contract(request):
-    if request.method == "GET": 
-        return JsonResponse({"message_status":"Получен список"})
-    else:
-        return HttpResponseNotAllowed(['GET'])
-
-# @require_GET  # делаем views доступным только от этого метода
-def get_info_contract(request, id):
-    if request.method == "GET": 
-        return JsonResponse({"message_status":f"Информация о заказе {id}"})
-    else:
-        return HttpResponseNotAllowed(['GET'])
-    
-###
-
-@csrf_exempt
 @require_POST
 @require_body('POST', ['lname', 'fname', 'login', 'email', 'telefon'])
 def create_user(request, Model):
     info = json.loads(request.body)
-    # {"lname":"Amir"}
+    # {"lname":"name"}
     user = Model.objects.create(**info)
     return JsonResponse({"status":"Создан новый объект"})  
-    # return Client.objects.create(lname="Amir",...)
+    # return Client.objects.create(lname="name",...)
 
 @require_GET
 def user_info(request, id, Model):
@@ -85,3 +57,66 @@ def user_delete(request, id, Model):
         return JsonResponse({"Пользователь":"Удалён"})
     except Model.DoesNotExist:
         return JsonResponse({"error":f"Пользователь c {id} не найден"}, status=400)
+
+
+@csrf_exempt
+@require_POST
+@require_body('POST', ['city', 'street', 'house', 'flat'])
+def create_adres_sender(request, Model):
+    info = json.loads(request.body)
+    # {"city":"city"}
+    adres_sender = Model.objects.create(**info)
+    return JsonResponse({"status":"Создан новый объект"})  
+    # return Client.objects.create(city="city",...)
+
+@csrf_exempt
+@require_POST
+@require_body('POST', ['city', 'street', 'house', 'flat'])
+def create_adres_recipient(request, Model):
+    info = json.loads(request.body)
+    # {"city":"city"}
+    adres_recipient = Model.objects.create(**info)
+    return JsonResponse({"status":"Создан новый объект"})  
+    # return Client.objects.create(city="city",...)
+
+@require_GET
+def adress_info(request, id, Model):
+    try:
+        info = Model.objects.get(id=id)
+        return JsonResponse({"city":info.city,"street": info.street,"house": info.house,"flat": info.flat})
+    except Model.DoesNotExist:
+        return JsonResponse({"error":f"Адрес c id {id} не найден"}, status=400)
+    
+@require_GET
+def adress_list(request, Model):
+    adress_list = Model.objects.all()
+    return JsonResponse(list(adress_list.values()), safe=False)
+
+
+
+@csrf_exempt
+@require_http_methods(["PUT"])
+@require_body('PUT', ['city', 'street', 'house', 'flat'])
+def edit_adress(request, id, Model):
+    data = json.loads(request.body)
+    try:
+        info = Model.objects.get(id=id)
+        info.city = data['city']
+        info.street = data['street']
+        info.house = data['house']
+        info.flat = data['flat']
+        info.save()
+        return JsonResponse({"Объект":"Изменён","Адрес":{"city":info.city,"street": info.street,"house": info.house,"flat": info.flat}})
+    except Model.DoesNotExist:
+        return JsonResponse({"error":f"Адрес c id {id} не найден"}, status=400)
+
+
+@csrf_exempt
+@require_http_methods(["DELETE"])
+def adress_delete(request, id, Model):
+    try:
+        info = Model.objects.get(id=id)
+        info.delete()
+        return JsonResponse({"Адрес":"Удалён"})
+    except Model.DoesNotExist:
+        return JsonResponse({"error":f"Адрес c id{id} не найден"}, status=400)

@@ -77,3 +77,4 @@ class LoadersList(models.Model):
         'Loader', verbose_name='Грузчик', on_delete=models.RESTRICT, related_name='loaders')
     contract = models.ForeignKey(
         'Contract', verbose_name='Заказ', on_delete=models.RESTRICT, related_name='loaders')
+

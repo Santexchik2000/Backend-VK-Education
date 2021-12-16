@@ -1,3 +1,3 @@
 __pycache__
 .env
-/application/local_setting.py
+postdelivery/application/local_setting.py
