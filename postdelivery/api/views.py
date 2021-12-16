@@ -1,61 +1,79 @@
 import json
 from typing import Dict
+from django.contrib.auth import get_user
 from django.http.response import HttpResponseNotAllowed
 from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 from django.views.decorators.csrf import csrf_exempt
 from api.decorators import require_body
-from db.models import Client
+from user.models import UserProfile as User
 
 @csrf_exempt
 @require_POST
-@require_body('POST', ['lname', 'fname', 'login', 'email', 'telefon'])
-def create_user(request, Model):
+@require_body('POST', ['last_name', 'first_name', 'login', 'email', 'telefon', 'role'])
+def create_user(request):
     info = json.loads(request.body)
+    User.objects.create(**info)
+
     # {"lname":"name"}
-    user = Model.objects.create(**info)
-    return JsonResponse({"status":"Создан новый объект"})  
-    # return Client.objects.create(lname="name",...)
+    return JsonResponse({"status":"Создан новый объект"})
 
 @require_GET
-def user_info(request, id, Model):
+def user_info(request, id):
     try:
-        info = Model.objects.get(id=id)
-        return JsonResponse({"fname":info.fname,"lname": info.lname,"login": info.login,"email": info.email,"telefon": info.telefon})
-    except Model.DoesNotExist:
+        user = User.objects.get(id=id)
+        return JsonResponse({
+            "fname":user.fname, 
+            "lname": user.lname, 
+            "login": user.login, 
+            "email": user.email, 
+            "telefon": user.telefon,
+            "role": user.role,
+            })
+    except User.DoesNotExist:
         return JsonResponse({"error":f"Пользователь c {id} не найден"}, status=400)
     
 @require_GET
-def user_list(request, Model):
-    user_list = Model.objects.all()
+def user_list(request):
+    user_list = User.objects.all()
     return JsonResponse(list(user_list.values()), safe=False)
 
 @csrf_exempt
 @require_http_methods(["PUT"])
-@require_body('PUT', ['lname', 'fname', 'login', 'email', 'telefon'])
-def edit_user(request, id, Model):
+@require_body('PUT', ['lname', 'fname', 'login', 'email', 'telefon', 'role'])
+def edit_user(request, id):
     data = json.loads(request.body)
     try:
-        info = Model.objects.get(id=id)
-        info.lname = data['lname']
-        info.fname = data['fname']
-        info.login = data['login']
-        info.email = data['email']
-        info.telefon = data['telefon']
-        info.save()
-        return JsonResponse({"Объект":"Изменён","Пользователь":{"fname":info.fname,"lname": info.lname,"login": info.login,"email": info.email,"telefon": info.telefon}})
-    except Model.DoesNotExist:
+        user = User.objects.get(id=id)
+        user.lname = data['lname']
+        user.fname = data['fname']
+        user.login = data['login']
+        user.email = data['email']
+        user.telefon = data['telefon']
+        user.role = data['role']
+        user.save()
+        return JsonResponse({
+            "Объект":"Изменён",
+            "Пользователь": { 
+                "fname":user.fname, 
+                "lname": user.lname, 
+                "login": user.login, 
+                "email": user.email, 
+                "telefon": user.telefon,
+                "role": user.role, 
+                }})
+    except User.DoesNotExist:
         return JsonResponse({"error":f"Пользователь c {id} не найден"}, status=400)
 
 @csrf_exempt
 @require_http_methods(["DELETE"])
-def user_delete(request, id, Model):
+def user_delete(request, id):
     try:
-        info = Model.objects.get(id=id)
-        info.delete()
+        user = User.objects.get(id=id)
+        user.delete()
         return JsonResponse({"Пользователь":"Удалён"})
-    except Model.DoesNotExist:
+    except User.DoesNotExist:
         return JsonResponse({"error":f"Пользователь c {id} не найден"}, status=400)
 
 
