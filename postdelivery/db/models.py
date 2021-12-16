@@ -36,7 +36,7 @@ class Manager(CommonInfo):
 
 
 class Driver(CommonInfo):
-    car_number = models.CharField('Номер машины', max_length=12)
+    pass
 
 
 class Loader(CommonInfo):
@@ -77,3 +77,4 @@ class LoadersList(models.Model):
         'Loader', verbose_name='Грузчик', on_delete=models.RESTRICT, related_name='loaders')
     contract = models.ForeignKey(
         'Contract', verbose_name='Заказ', on_delete=models.RESTRICT, related_name='loaders')
+
