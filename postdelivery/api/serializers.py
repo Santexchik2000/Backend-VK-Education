@@ -29,12 +29,35 @@ class RouteSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     
+    def validate(self,attrs):
+
+        
+        if len(attrs['first_name']) < 1 and len(attrs['first_name']) > 35:
+            raise serializers.ValidationError(
+                "Поле фамилия не должно содержать больше 35 символов")
+        
+        if len(attrs['last_name']) < 1 and len(attrs['last_name']) > 35:
+            raise serializers.ValidationError(
+                "Поле имя не должно содержать больше 35 символов")
+
+        if len(attrs['telefon']) != 12:
+            raise serializers.ValidationError(
+                "Номер пользователя должен содержать ровно 12 букв,включая префикс +")
+        if not all([i in "+1234567890" for i in attrs['telefon']]):
+            raise serializers.ValidationError(
+                "Номер пользователя не должен содержать символы алфавита, только цифры и префикс +")
+        return attrs
+
+        
+
     class Meta:
         model = UserProfile
         fields =(
         'id','username','email','first_name',
         'last_name','telefon','role'
         )
+
+    
 
 
 class ContractSerializer(serializers.ModelSerializer):

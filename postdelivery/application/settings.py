@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'db.apps.DbConfig',
     'ui.apps.UiConfig',
     'user.apps.UserConfig',
-    'rest_framework'
+    'rest_framework',
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -91,6 +92,18 @@ DATABASES = {
     }
 }
 
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Postdelivery API',
+    'DESCRIPTION': 'Schema for Postdelivery api',
+    'VERSION': '1.0.0',
+    'SCHEMA_PATH_PREFIX': r'/api/',
+    # OTHER SETTINGS
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
