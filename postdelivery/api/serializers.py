@@ -67,12 +67,10 @@ class ContractSerializer(serializers.ModelSerializer):
     manager = UserProfileSerializer(read_only=True)
     driver = UserProfileSerializer(read_only=True)
     loader = UserProfileSerializer(many=True,read_only=True)
+    # creation_date = serializers.DateTimeField()
+    # closing_date = serializers.DateTimeField()
     class Meta:
         model = Contract
-        fields = (
-        'id','client','recipient','route',
-        'manager','driver', 'creation_date',
-        'closing_date', 'contract_price',
-        'count_loader','comment','loader')
+        fields = ('id', 'client', 'recipient', 'route', 'manager','driver', 'loader')
 
     

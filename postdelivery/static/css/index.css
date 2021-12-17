@@ -1,0 +1,39 @@
+img {
+    border: 5px solid #646c7c;
+}
+
+.row {
+    width: 100%;
+    margin: 0;
+}
+
+.container-fluid {
+    height: 100vh;
+    background-color: #282c34;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.card {
+    width: 100%;
+}
+
+.social-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.btn a, .btn a:hover {
+    color: white;
+    text-decoration: none ;
+}
+
+
+.container-fluid > div {
+    width: 85%;
+    min-width: 300px;
+    max-width: 500px;
+}
