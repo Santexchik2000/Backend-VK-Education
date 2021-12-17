@@ -1,24 +1,16 @@
-from django.urls import path
+from django.urls import path, include
 from api import views
+from rest_framework.routers import DefaultRouter
 
-from db import models
+router = DefaultRouter()
+router.register(r'recipient',views.RecipientViewSet, basename='recipient')
+router.register(r'adress_sender',views.AdressSenderViewSet, basename='adress_sender')
+router.register(r'adress_recipient',views.AdressRecipientViewSet,basename='adress_recipient')
+router.register(r'route',views.RouteViewSet,basename='route')
+router.register(r'user_profile',views.UserProfileViewSet,basename='user_profile')
+router.register(r'contract',views.ContractViewSet,basename='contract')
+
 
 urlpatterns = [
-    path('user/create/', views.create_user),
-    path('user/<int:id>/', views.user_info),
-    path('user/all/', views.user_list),
-    path('user/<int:id>/edit/', views.edit_user),
-    path('user/<int:id>/delete/', views.user_delete),
-    path('adresssender/create/',views.create_adres_sender,{"Model":models.AdressSender}),
-    path('adressrecipient/create/',views.create_adres_recipient,{"Model":models.AdressRecipient}),
-    path('adresssender/<int:id>/',views.adress_info,{"Model":models.AdressSender}),
-    path('adressrecipient/<int:id>/',views.adress_info,{"Model":models.AdressRecipient}),
-    path('adresssender/all/', views.adress_list, {"Model": models.AdressSender}),
-    path('adressrecipient/all/', views.adress_list, {"Model": models.AdressRecipient}),
-    path('adresssender/<int:id>/edit/', views.edit_adress, {"Model": models.AdressSender}),
-    path('adressrecipient/<int:id>/edit/', views.edit_adress, {"Model": models.AdressRecipient}),
-    path('adresssender/<int:id>/delete/', views.adress_delete, {"Model": models.AdressSender}),
-    path('adressrecipient/<int:id>/delete/', views.adress_delete, {"Model": models.AdressRecipient}),
-
-
+   path('', include(router.urls))
 ]
