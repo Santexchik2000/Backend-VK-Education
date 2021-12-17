@@ -1,5 +1,5 @@
 img {
-    border: 5px solid #646c7c;
+    border: 5px solid #070707;
 }
 
 .row {
@@ -27,7 +27,7 @@ img {
 }
 
 .btn a, .btn a:hover {
-    color: white;
+    color: rgb(10, 10, 10);
     text-decoration: none ;
 }
 
