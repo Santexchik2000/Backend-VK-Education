@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-g)=mxs54$1-^-1910eas_oz(2c-=gp-k)lggw)w_r)skh=w=rj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_spectacular',
     'social_django',
+    'django_elasticsearch_dsl',
+    'django_elasticsearch_dsl_drf',
 ]
 
 MIDDLEWARE = [
@@ -176,6 +178,13 @@ CELERY_BROKER_URL = 'redis://localhost:6379'
 
 # django-db означает что будет подлючена оснавная бд
 CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'localhost:9200'
+    },
+}
 
 CELERY_BEAT_SCHEDULE = {
     'user_count_checking': {
