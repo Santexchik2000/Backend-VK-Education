@@ -1,24 +1,42 @@
+from datetime import datetime
 from rest_framework import serializers
 from db.models import Contract, Recipient, AdressSender, AdressRecipient, Route
 from user.models import UserProfile
+from api.tasks import send_email
 
 
-class RecipientSerializer(serializers.ModelSerializer):
+
+class EmailSendMixin(serializers.Serializer):
+    """
+    реализует отправку сообщения во время создания объекта.
+    """
+    def create(self, validated_data):
+        instance = super().create(validated_data)
+        text = '[{}]\nБыл создан объект модели {} - {}'.format(
+            datetime.now().isoformat(),
+            self.Meta.model,
+            instance)
+        send_email.delay(subject='Новый объект', text=text)
+        print("SENDING EMIAL")
+        return instance
+
+
+class RecipientSerializer(EmailSendMixin, serializers.ModelSerializer):
     class Meta:
         model = Recipient
         fields =('id','fname','lname','telefon')
 
-class AdressSenderSerializer(serializers.ModelSerializer):
+class AdressSenderSerializer(EmailSendMixin, serializers.ModelSerializer):
     class Meta:
         model = AdressSender
         fields = ('id','city','street','house','flat')
 
-class AdressRecipientSerializer(serializers.ModelSerializer):
+class AdressRecipientSerializer(EmailSendMixin, serializers.ModelSerializer):
     class Meta:
         model = AdressRecipient
         fields = ('id','city','street','house','flat')
 
-class RouteSerializer(serializers.ModelSerializer):
+class RouteSerializer(EmailSendMixin, serializers.ModelSerializer):
     adress_Sender = AdressSenderSerializer(read_only=True)
     adress_Recipient = AdressRecipientSerializer(read_only=True)
 
@@ -27,7 +45,7 @@ class RouteSerializer(serializers.ModelSerializer):
         fields =('adress_Sender','adress_Recipient')
 
 
-class UserProfileSerializer(serializers.ModelSerializer):
+class UserProfileSerializer(EmailSendMixin, serializers.ModelSerializer):
     
     def validate(self,attrs):
 
@@ -60,7 +78,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     
 
 
-class ContractSerializer(serializers.ModelSerializer):
+class ContractSerializer(EmailSendMixin, serializers.ModelSerializer):
     client = UserProfileSerializer(read_only=True)
     recipient = RecipientSerializer(read_only=True)
     route = RouteSerializer(read_only=True)
